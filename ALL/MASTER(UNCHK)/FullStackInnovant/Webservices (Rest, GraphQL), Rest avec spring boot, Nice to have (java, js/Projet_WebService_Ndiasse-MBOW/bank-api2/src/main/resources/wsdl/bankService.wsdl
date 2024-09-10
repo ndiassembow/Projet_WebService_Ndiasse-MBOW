@@ -1,0 +1,84 @@
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:xs="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://service.bank.com/"
+             name="BookService"
+             targetNamespace="http://service.bank.com/">
+
+    <message name="getBalanceRequest">
+        <part name="accountId" type="xs:string"/>
+    </message>
+    <message name="getBalanceResponse">
+        <part name="balance" type="xs:double"/>
+    </message>
+
+    <message name="getTransactionsRequest">
+        <part name="accountId" type="xs:string"/>
+        <part name="pageNumber" type="xs:int"/>
+        <part name="pageSize" type="xs:int"/>
+    </message>
+    <message name="getTransactionsResponse">
+        <part name="transactions" type="xs:string"/> <!-- Use complex type if needed -->
+    </message>
+
+    <message name="transferFundsRequest">
+        <part name="creditor" type="xs:string"/>
+        <part name="debtor" type="xs:string"/>
+        <part name="amount" type="xs:double"/>
+        <part name="currency" type="xs:string"/>
+    </message>
+    <message name="transferFundsResponse"/>
+
+    <portType name="BookServicePortType">
+        <operation name="getBalance">
+            <input message="tns:getBalanceRequest"/>
+            <output message="tns:getBalanceResponse"/>
+        </operation>
+        <operation name="getTransactions">
+            <input message="tns:getTransactionsRequest"/>
+            <output message="tns:getTransactionsResponse"/>
+        </operation>
+        <operation name="transferFunds">
+            <input message="tns:transferFundsRequest"/>
+            <output message="tns:transferFundsResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="BookServiceBinding" type="tns:BookServicePortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getBalance">
+            <soap:operation soapAction="http://service.bank.com/getBalance"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="getTransactions">
+            <soap:operation soapAction="http://service.bank.com/getTransactions"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="transferFunds">
+            <soap:operation soapAction="http://service.bank.com/transferFunds"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="BookService">
+        <port name="BookServicePort" binding="tns:BookServiceBinding">
+            <soap:address location="http://localhost:8080/ws/bank"/>
+        </port>
+    </service>
+
+</definitions>
